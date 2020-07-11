@@ -3,25 +3,25 @@ services:
   frontend:
     container_name: lawpath_frontend
     build:
-      context: ./web
+      context: ./packages/web
       dockerfile: Dockerfile
     ports:
       - 3001:3000
     environment:
       - CHOKIDAR_USEPOLLING=true
     volumes:
-      - "./web:/var/app/web"
+      - "./packages/web:/var/app/web"
       - "/var/app/web/node_modules"
     stdin_open: true
 
   backend:
     container_name: lawpath_backend
     build:
-      context: ./api
+      context: ./packages/api
       dockerfile: Dockerfile
     ports:
       - 8181:8080
     volumes:
-      - "./api:/var/app/api"
+      - "./packages/api:/var/app/api"
       - "/var/app/api/node_modules"
     stdin_open: true

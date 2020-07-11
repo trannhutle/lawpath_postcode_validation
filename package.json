@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "lawpath_postcode_validation",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {},
+  "dependencies": {
+    "lint-staged": "^10.2.11"
+  }
+}
