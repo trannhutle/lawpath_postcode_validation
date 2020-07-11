@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const ResponseTemplate = {
-  isSuccess: false,
+  isSuccess: true,
   statusCode: 200,
   msg: "Sent request successfully",
   data: {},
@@ -31,14 +31,14 @@ module.exports = class ApiRequest {
     return { ...ResponseTemplate, isSuccess: false, statusCode: code, msg: msg };
   };
 
-  get = async (path, headers, params, callback) => {
-    console.log("Header", headers)
-    console.log("params", params)
-    return this.request.get(path, { headers: headers, params: params }).then((response) => callback(response));
+  get = (path, headers, params, callback) => {
+    console.log("Header", headers);
+    console.log("params", params);
+    this.request.get(path, { headers: headers, params: params }).then((response) => callback(response));
   };
 
   post = async (path, headers, payload, callback) => {
-    return this.request
+    this.request
       .request({
         method: "POST",
         url: path,
@@ -48,4 +48,4 @@ module.exports = class ApiRequest {
       })
       .then((response) => callback(response));
   };
-}
+};

@@ -1,9 +1,13 @@
 import { createStore, applyMiddleware, compose } from "redux";
-import { defaultState } from "formDefault";
-import { formValidationMiddleware } from "../middleware/validationMiddleware";
-// let composeEnhancers =
-//   (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__()) || compose;
+import defaultState from "./defaultState";
+import thunk from "redux-thunk";
+import combineReducer from "../reducers";
+import formValidationMiddleware from "../middleware/validationMiddleware";
+import apiMiddleware from "../middleware/apiMiddleware";
+let composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export default function configureStore() {
-  return createStore(defaultState, applyMiddleware(formValidationMiddleware));
-}
+const configureStore = () => {
+  return createStore(combineReducer, composeEnhancers(applyMiddleware(thunk, formValidationMiddleware, apiMiddleware)));
+};
+
+export default configureStore;

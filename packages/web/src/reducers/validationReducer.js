@@ -1,7 +1,8 @@
-import { defaultState } from "../store/defaultState";
+import defaultState from "../store/defaultState";
 import { SURBURB_POSTCODE_VALIDATION_ERROR } from "../action/validationAction";
 
-export default function formValidationReducer(state = defaultState, action) {
+const formValidationReducer = (state = defaultState, action) => {
+  console.log("Go to formValidationReducer", state);
   switch (action.type) {
     case SURBURB_POSTCODE_VALIDATION_ERROR:
       return {
@@ -12,6 +13,8 @@ export default function formValidationReducer(state = defaultState, action) {
         },
       };
     default:
-      state;
+      return state;
   }
-}
+};
+
+export default formValidationReducer;

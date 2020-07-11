@@ -5,9 +5,9 @@ const postCodeFormValidation = ({ shape, path = "body" }) => async (req, res, ne
     const validData = await shape.validate(req[path], { abortEarly: false });
     req.validData = validData;
     return next();
-  } catch (error) {
+  } catch (errors) {
     const errorObjs = [];
-    error.inner.forEach((e) => {
+    errors.inner.forEach((e) => {
       errorObjs.push({
         name: e.path,
         message: e.message,

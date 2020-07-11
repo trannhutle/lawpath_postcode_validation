@@ -1,4 +1,4 @@
-export default defaultState = {
+const defaultState = {
   surburb: "",
   postCode: undefined,
   state: "",
@@ -8,3 +8,4 @@ export default defaultState = {
     state: false,
   },
 };
+export default defaultState;

@@ -17,13 +17,9 @@ router.post(
     shape: postCodeValidationSchema,
   }),
   (req, res, next) => {
-    const surburb = req["body"]["surburb"];
-    const postcode = req["body"]["postcode"];
-
-    const resut = validatePostCode(surburb, postcode);
-    console.log("this is the result ", resut);
-    // return res.status(200).json(resut);
-    return res.status(200).json({ Test: "Rafa" });
+    validatePostCode(req.validData.surburb, req.validData.state, (response) => {
+      return res.status(200).json(response);
+    });
   }
 );
 
