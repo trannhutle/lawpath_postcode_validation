@@ -1,9 +1,4 @@
-import {
-  VALIDATE_LOCATION_POSTCODE,
-  submitRequest,
-  postcodeValidationError,
-  locationNotFoundError,
-} from "../action/validationAction";
+import { VALIDATE_LOCATION_POSTCODE, submitRequest, locationValidationError } from "../action/validationAction";
 import { postPostcodeValidation } from "../services/postcodeValidationService";
 
 const isPostCodeMatchedLocation = (valueA, valueB) => {
@@ -19,7 +14,7 @@ const attributeValidators = {
   state: isLocationMatchedState,
 };
 
-const astronautValidationErrors = (list, compareObject) => {
+const locationValidation = (list, compareObject) => {
   const errors = {};
   // Get validators
   Object.keys(attributeValidators).map((validator) => {
@@ -44,19 +39,17 @@ export const postcodeFormValidation = ({ dispatch, getState }) => (next) => (act
     submitRequest(postPostcodeValidation, action.details, (response) => {
       let locations = response.data;
       const selectedLocation = action.details.location;
-
       const filterLocations = locations.filter((location) => {
         return location.location.toLowerCase() === selectedLocation.toLowerCase();
       });
-
-      // Show error message if not found location
-      console.log(filterLocations);
+      const { errors } = {
+        errors: getState().postcode.errors,
+      };
       if (filterLocations.length === 0) {
-        dispatch(locationNotFoundError());
+        dispatch(locationValidationError({ ...errors, location: true }));
       } else {
-        const validatioResult = astronautValidationErrors(filterLocations, action.details);
-        console.log(validatioResult);
-        dispatch(postcodeValidationError(validatioResult));
+        const validatioResult = locationValidation(filterLocations, action.details);
+        dispatch(locationValidationError({ ...errors, ...validatioResult }));
       }
     })
   );

@@ -1,4 +1,10 @@
-import { LOCATION_VALIDATION_ERROR, LOCATION_NOT_FOUND_ERROR } from "../action/validationAction";
+import {
+  LOCATION_VALIDATION_ERROR,
+  LOCATION_NOT_FOUND_ERROR,
+  VALIDATE_LOCATION_POSTCODE,
+  LOADING,
+  RESET_ERROR,
+} from "../action/validationAction";
 
 const defaultState = {
   details: {
@@ -11,6 +17,8 @@ const defaultState = {
     postcode: false,
     state: false,
   },
+  success: false,
+  loading: false,
 };
 
 const postcodeReducer = (state = defaultState, action) => {
@@ -19,14 +27,23 @@ const postcodeReducer = (state = defaultState, action) => {
       return {
         ...state,
         errors: {
+          ...state.errors,
           ...action.errors,
         },
       };
-    case LOCATION_NOT_FOUND_ERROR:
+    case LOADING:
+      return {
+        ...state,
+        loading: action.loading,
+      };
+    case RESET_ERROR:
+      Object.keys(state.errors).map((key) => {
+        state.errors[key] = false;
+      });
       return {
         ...state,
         errors: {
-          location: true,
+          ...state.errors,
         },
       };
     default:
