@@ -1,34 +1,10 @@
 import { VALIDATE_LOCATION_POSTCODE, submitRequest, locationValidationError } from "../action/validationAction";
 import { postPostcodeValidation } from "../services/postcodeValidationService";
-
-const isPostCodeMatchedLocation = (valueA, valueB) => {
-  return parseInt(valueA) === parseInt(valueB);
-};
-
-const isLocationMatchedState = (valueA, valueB) => {
-  return valueA.toLowerCase() === valueB.toLowerCase();
-};
+import { locationValidator, isLocationMatchedState, isPostCodeMatchedLocation } from "../utils/utils";
 
 const attributeValidators = {
   postcode: isPostCodeMatchedLocation,
   state: isLocationMatchedState,
-};
-
-const locationValidation = (list, compareObject) => {
-  const errors = {};
-  // Get validators
-  Object.keys(attributeValidators).map((validator) => {
-    // Find the last match one
-    const matchSurburb = list.reduce((foundLocation, currentLocation) => {
-      // Pass values for comparitor
-      if (attributeValidators[validator](currentLocation[validator], compareObject[validator])) {
-        return true;
-      }
-      return foundLocation;
-    }, false);
-    errors[validator] = !matchSurburb;
-  });
-  return errors;
 };
 
 export const postcodeFormValidation = ({ dispatch, getState }) => (next) => (action) => {
@@ -48,7 +24,7 @@ export const postcodeFormValidation = ({ dispatch, getState }) => (next) => (act
       if (filterLocations.length === 0) {
         dispatch(locationValidationError({ ...errors, location: true }));
       } else {
-        const validatioResult = locationValidation(filterLocations, action.details);
+        const validatioResult = locationValidator(attributeValidators, filterLocations, action.details);
         dispatch(locationValidationError({ ...errors, ...validatioResult }));
       }
     })

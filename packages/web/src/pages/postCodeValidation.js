@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Formik, Field, Form, useField, FieldArray } from "formik";
+import { Formik, Form, useField } from "formik";
 import {
   TextField,
   Button,
@@ -7,8 +7,6 @@ import {
   MenuItem,
   FormHelperText,
   FormControl,
-  Box,
-  Paper,
   Card,
   CardContent,
   Typography,
@@ -20,6 +18,7 @@ import * as yup from "yup";
 import * as validationActions from "../action/validationAction";
 import { useDispatch, useSelector } from "react-redux";
 import { STATES } from "../utils/statics";
+import { postCodeValidationSchema } from "@lawpath/common";
 
 const CustomedTextField = ({ customError, customErrorText, placeholder, formControlProps, ...props }) => {
   const [field, meta] = useField(props);
@@ -95,7 +94,7 @@ const PostCodeValidationForm = () => {
       onSubmit={(data, { setSubmiting, resetForm }) => {
         onValidateFrom(data);
       }}
-      validationSchema={validationSchema}
+      validationSchema={postCodeValidationSchema}
     >
       {/* {(props, { isSubmitting }) => ( */}
       {({ values, err, isSubmitting, isValid, dirty, success }) => (

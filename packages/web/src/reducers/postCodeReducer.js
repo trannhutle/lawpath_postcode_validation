@@ -1,10 +1,4 @@
-import {
-  LOCATION_VALIDATION_ERROR,
-  LOCATION_NOT_FOUND_ERROR,
-  VALIDATE_LOCATION_POSTCODE,
-  LOADING,
-  RESET_ERROR,
-} from "../action/validationAction";
+import { LOCATION_VALIDATION_ERROR, LOADING, RESET_ERROR } from "../action/validationAction";
 
 const defaultState = {
   details: {
