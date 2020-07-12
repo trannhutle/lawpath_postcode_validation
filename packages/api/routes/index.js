@@ -5,19 +5,18 @@ const { postCodeFormValidation } = require("../middleware/validate");
 const { validatePostCode } = require("../services/postcodeService");
 const { postCodeValidationSchema } = require("@lawpath/common");
 
-/* GET home page. */
 router.get("/", (req, res, next) => {
   res.render("index", { title: "Expressss sss" });
 });
 
-/* GET home page. */
 router.post(
   "/validatePostCode",
   postCodeFormValidation({
     shape: postCodeValidationSchema,
   }),
   (req, res, next) => {
-    validatePostCode(req.validData.surburb, req.validData.state, (response) => {
+    console.log(req.validData);
+    validatePostCode(req.validData.location, (response) => {
       return res.status(200).json(response);
     });
   }

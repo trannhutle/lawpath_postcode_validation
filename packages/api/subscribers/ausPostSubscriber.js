@@ -3,7 +3,7 @@ const dotenv = require("dotenv").config();
 
 const AUS_POST_POST_CODE_API = "https://digitalapi.auspost.com.au/postcode/search.json";
 
-const findPostCode = (surburb, state, callback) => {
+const findPostCode = (surburb, callback) => {
   new ApiRequest().get(
     AUS_POST_POST_CODE_API,
     {
@@ -11,7 +11,6 @@ const findPostCode = (surburb, state, callback) => {
     },
     {
       q: surburb,
-      state: state,
       excludepostboxflag: false,
     },
     callback

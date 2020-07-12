@@ -1,7 +1,7 @@
 const ausPostSubscriber = require("../subscribers/ausPostSubscriber");
 
-const validatePostCode = (surburb, state, callback) => {
-  ausPostSubscriber.findPostCode(surburb, state, (response) => {
+const validatePostCode = (location, callback) => {
+  ausPostSubscriber.findPostCode(location, (response) => {
     var filteredLocals = [];
     const locals = response.data.localities;
 

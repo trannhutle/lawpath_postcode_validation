@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import formValidationReducer from "./validationReducer";
+import postcodeReducer from "./postCodeReducer";
 
 const combineReducer = combineReducers({
-  formValidationReducer,
+  postcode: postcodeReducer,
 });
 
 export default combineReducer;

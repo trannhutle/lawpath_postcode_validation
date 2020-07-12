@@ -32,8 +32,6 @@ module.exports = class ApiRequest {
   };
 
   get = (path, headers, params, callback) => {
-    console.log("Header", headers);
-    console.log("params", params);
     this.request.get(path, { headers: headers, params: params }).then((response) => callback(response));
   };
 

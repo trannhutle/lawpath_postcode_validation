@@ -5,9 +5,13 @@ const apiMiddleWare = ({ dispatch, getState }) => (next) => (action) => {
   if (action.type !== SUBMIT_REQUEST) {
     return next(action);
   }
-
-  console.log("function is called", action.formData);
-  postPostcodeValidation(action.formData);
+  action.api(action.formData, (response) => {
+    if (response.isSuccess) {
+      action.callback(response);
+    } else {
+      console.log("There is error");
+    }
+  });
 };
 
 export default apiMiddleWare;
