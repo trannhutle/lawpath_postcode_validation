@@ -1,11 +1,24 @@
 const yup = require("yup");
 
-const postCodeValidationSchema = yup.object().shape({
-  location: yup.string().label("Surburb").required().max(35),
-  postcode: yup.number().label("Postcode").required().positive().typeError("Postcode must be number"),
-  state: yup.string().label("State").required(),
-});
+const getPostcostValidationSchema = ({ location, postcode, state }) => {
+  return yup.object().shape({
+    location: yup
+      .string()
+      .label(location ? location : "Surburb")
+      .required()
+      .max(35),
+    postcode: yup
+      .number()
+      .label(postcode ? postcode : "Postcode")
+      .required()
+      .positive(),
+    state: yup
+      .string()
+      .label(state ? state : "State")
+      .required(),
+  });
+};
 
 module.exports = {
-  postCodeValidationSchema,
+  getPostcostValidationSchema,
 };

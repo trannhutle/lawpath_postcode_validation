@@ -3,7 +3,7 @@ var router = express.Router();
 const yup = require("yup");
 const { postCodeFormValidation } = require("../middleware/validate");
 const { validatePostCode } = require("../services/postcodeService");
-const { postCodeValidationSchema } = require("@lawpath/common");
+const { getPostcostValidationSchema } = require("@lawpath/common");
 
 router.get("/", (req, res, next) => {
   res.render("index", { title: "Expressss sss" });
@@ -12,7 +12,11 @@ router.get("/", (req, res, next) => {
 router.post(
   "/validatePostCode",
   postCodeFormValidation({
-    shape: postCodeValidationSchema,
+    shape: getPostcostValidationSchema({
+      location: "Surburb",
+      state: "State",
+      postcode: "Postcode",
+    }),
   }),
   (req, res, next) => {
     console.log(req.validData);

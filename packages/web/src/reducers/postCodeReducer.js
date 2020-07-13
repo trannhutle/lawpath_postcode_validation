@@ -3,7 +3,7 @@ import { LOCATION_VALIDATION_ERROR, LOADING, RESET_ERROR } from "../action/valid
 const defaultState = {
   details: {
     location: "",
-    postcode: undefined,
+    postcode: 0,
     state: "",
   },
   errors: {

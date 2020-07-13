@@ -1,0 +1,25 @@
+{
+  "language": "Tiếng Việt",
+  "postcode": {
+    "title": "Tìm kiếm postcode",
+    "fields": {
+      "location": "Vùng",
+      "state": "Bang",
+      "postcode": "Postcode"
+    },
+    "errorMsgs": {
+      "required": "${path} là trường bắt buộc",
+      "positive": "${path} phải là trường số dương",
+      "notType": "${path} phải là trường số dương",
+      "maxString": "${path} vượt quá ${max} ký tự",
+      "location": "Không tìm thấy vùng {{location}} ",
+      "postcode": "Postcode {{postcode}} không trùng với {{location}}",
+      "state": "Vung {{location}} không tồn tại trong bang {{state}}"
+    },
+    "successMsg": "Thông tin Vùng, Postcode và Bang trùng khớp với nhau",
+    "find": "Tìm kiếm"
+  },
+  "weather": {
+    "title": "Weather forecast"
+  }
+}

@@ -1,27 +1,21 @@
-import React from "react";
+import React, { Suspense } from "react";
 import PostCodeValidation from "./pages/postCodeValidation";
+import { Container } from "@material-ui/core";
+import { Headers } from "./components/header";
 import "./App.css";
-import { Container, Button } from "@material-ui/core";
-import { useTranslation, } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 function App() {
-  const { t, i18n } = useTranslation();
-  const changeLanguage = (code) => {
-    i18n.changeLanguage(code);
+  const { i18n } = useTranslation();
+  const changeLanguage = (language) => {
+    localStorage.setItem("lang", language);
+    i18n.changeLanguage(language);
+    window.location.reload();
   };
+
   return (
     <div className="App">
-      <button type="button" onClick={() => changeLanguage("ru")}>
-        {t("translation:de")}
-      </button>
-
-      <button type="button" onClick={() => changeLanguage("en")}>
-        {t("translation:en")}
-      </button>
-
-      <h1>{t("Welcome to React")}</h1>
-      <h1>{t("weather.title")}</h1>
-
+      <Headers changeLanguage={changeLanguage} />
       <Container maxWidth="sm">
         <PostCodeValidation />
       </Container>

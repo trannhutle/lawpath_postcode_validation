@@ -1,61 +1,13 @@
 import React, { useState } from "react";
-import { Formik, Form, useField } from "formik";
-import {
-  TextField,
-  Button,
-  Select,
-  MenuItem,
-  FormHelperText,
-  FormControl,
-  Card,
-  CardContent,
-  Typography,
-  Grid,
-  InputLabel,
-  CircularProgress,
-} from "@material-ui/core";
-import * as yup from "yup";
+import { Formik, Form } from "formik";
+import { TextField, Button, Card, CardContent, Typography, Grid, CircularProgress } from "@material-ui/core";
 import * as validationActions from "../action/validationAction";
 import { useDispatch, useSelector } from "react-redux";
 import { STATES } from "../utils/statics";
-import { postCodeValidationSchema } from "@lawpath/common";
-
-const CustomedTextField = ({ customError, customErrorText, placeholder, formControlProps, ...props }) => {
-  const [field, meta] = useField(props);
-  // Custome error message only show when the new input is similar with the last old one.
-  let errorText =
-    meta.error && meta.touched ? meta.error : customError && meta.value === meta.initialValue ? customErrorText : "";
-  return (
-    <FormControl {...formControlProps} error={!!errorText}>
-      <TextField {...field} {...props} helperText={errorText} error={!!errorText} />
-    </FormControl>
-  );
-};
-
-const CustomedSelect = ({ data, label, customError, customErrorText, formControlProps, ...props }) => {
-  const [field, meta] = useField(props);
-  let errorText =
-    meta.error && meta.touched ? meta.error : customError && meta.value === meta.initialValue ? customErrorText : "";
-  return (
-    <FormControl {...formControlProps} error={!!errorText}>
-      <InputLabel>{label}</InputLabel>
-      <Select {...field} label={label}>
-        {Object.keys(data).map((key, index) => (
-          <MenuItem id={`${key}_${index}`} value={key}>
-            {data[key]}
-          </MenuItem>
-        ))}
-      </Select>
-      <FormHelperText error={!!errorText}>{errorText} </FormHelperText>
-    </FormControl>
-  );
-};
-
-const validationSchema = yup.object({
-  location: yup.string().label("Surburb").required().max(35),
-  postcode: yup.number().label("Postcode").required().positive().typeError("Postcode must be number"),
-  state: yup.string().label("State").required(),
-});
+import { getPostcostValidationSchema } from "@lawpath/common";
+import { useTranslation } from "react-i18next";
+import { SetLocalisation } from "../utils/utils";
+import { CustomedSelect, CustomedTextField } from "../components/forms";
 
 const style = {
   textField: {
@@ -74,13 +26,15 @@ const style = {
 };
 
 const PostCodeValidationForm = () => {
+  SetLocalisation();
+  const { t } = useTranslation();
   const { errors, details, loading } = useSelector((state) => ({
     errors: state.postcode.errors,
     details: state.postcode.details,
     loading: state.postcode.loading,
   }));
-  const dispatch = useDispatch();
   const [formData, setFormData] = useState(details);
+  const dispatch = useDispatch();
 
   const onValidateFrom = (data) => {
     setFormData(data);
@@ -91,52 +45,64 @@ const PostCodeValidationForm = () => {
   return (
     <Formik
       initialValues={formData}
-      onSubmit={(data, { setSubmiting, resetForm }) => {
+      onSubmit={(data) => {
         onValidateFrom(data);
       }}
-      validationSchema={postCodeValidationSchema}
+      validationSchema={getPostcostValidationSchema({
+        location: t("postcode.fields.location"),
+        state: t("postcode.fields.state"),
+        postcode: t("postcode.fields.postcode"),
+      })}
     >
-      {/* {(props, { isSubmitting }) => ( */}
-      {({ values, err, isSubmitting, isValid, dirty, success }) => (
+      {({ isSubmitting, isValid, dirty, success }) => (
         <Form>
           <CustomedTextField
-            label="Surburb"
             name="location"
-            type="input"
-            as={TextField}
+            label={t("postcode.fields.location")}
+            inputProps={{
+              "data-testid": "location",
+            }}
             customError={errors.location}
-            customErrorText={`The ${formData.location} surburb is not found`}
+            customErrorText={t("postcode.errorMsgs.location", { location: formData.location || "" })}
             formControlProps={style.formControl}
-            {...style.textField}
+            // {...style.textField}
           />
           <CustomedTextField
-            label="Postcode"
             name="postcode"
-            type="input"
-            as={TextField}
+            label={t("postcode.fields.postcode")}
             customError={errors.postcode}
-            customErrorText={`The postcode ${formData.postcode} does not match the surburb ${formData.location}`}
+            customErrorText={t("postcode.errorMsgs.postcode", {
+              location: formData.location || "",
+              postcode: formData.postcode || "",
+            })}
+            inputProps={{
+              "data-testid": "postcode",
+            }}
             formControlProps={style.formControl}
-            {...style.textField}
+            // {...style.textField}
           />
           <CustomedSelect
             name="state"
-            label="State"
+            label={t("postcode.fields.state")}
             data={STATES}
             customError={errors.state}
-            customErrorText={`The surburb ${formData.location} does not exist in the state ${STATES[formData.state]}`}
+            customErrorText={t("postcode.errorMsgs.state", {
+              location: formData.location || "",
+              state: STATES[formData.state] || "",
+            })}
             formControlProps={style.formControlSelect}
           ></CustomedSelect>
 
           <Grid container justify="center" style={{ height: "50px" }}>
             {Object.values(errors).every((error) => error === false) && isSubmitting && !loading && !dirty ? (
-              <Typography color="primary">The postcode, suburb and state entered are valid</Typography>
+              <Typography color="primary">{t("postcode.successMsg")}</Typography>
             ) : null}
             {loading ? <CircularProgress color="secondary" /> : null}
           </Grid>
+
           <Grid container justify="center">
-            <Button disabled={!dirty || !isValid} variant="outlined" color="primary" type="submit">
-              Find
+            <Button id="findBtn" disabled={!dirty || !isValid} variant="outlined" color="primary" type="submit">
+              {t("postcode.find")}
             </Button>
           </Grid>
         </Form>
@@ -146,12 +112,13 @@ const PostCodeValidationForm = () => {
 };
 
 function PostCodeValidation() {
+  const { t } = useTranslation();
   return (
     <Grid container justify="center">
       <Card style={{ minWidth: "100%" }}>
         <CardContent>
           <Typography variant="h4" component="h4" align="center" className="text-upper">
-            Search postcode
+            {t("postcode.title")}
           </Typography>
           <PostCodeValidationForm />
         </CardContent>
@@ -159,4 +126,5 @@ function PostCodeValidation() {
     </Grid>
   );
 }
+
 export default PostCodeValidation;

@@ -1,3 +1,6 @@
+import { setLocale } from "yup";
+import { useTranslation } from "react-i18next";
+
 export const isPostCodeMatchedLocation = (valueA, valueB) => {
   return parseInt(valueA) === parseInt(valueB);
 };
@@ -21,4 +24,21 @@ export const locationValidator = (attributeValidators, locations, compareToLocat
     errors[validator] = !matchSurburb;
   });
   return errors;
+};
+
+export const SetLocalisation = () => {
+  const { t } = useTranslation();
+  setLocale({
+    mixed: {
+      required: t("postcode.errorMsgs.required"),
+      notType: t("postcode.errorMsgs.notType"),
+    },
+    string: {
+      max: t("postcode.errorMsgs.maxString"),
+    },
+    number: {
+      positive: t("postcode.errorMsgs.positive"),
+      type: t("postcode.errorMsgs.notType"),
+    },
+  });
 };

@@ -1,6 +1,23 @@
 {
-  "news": {
-    "title": "Our news"
+  "language": "English",
+  "postcode": {
+    "title": "Search postcode",
+    "fields": {
+      "location": "Surburb",
+      "state": "State",
+      "postcode": "Postcode"
+    },
+    "errorMsgs": {
+      "required": "${path} is a required field",
+      "positive": "${path} must be a positive",
+      "notType": "${path} must be a number",
+      "maxString": "${path} must be at most ${max} characters",
+      "location": "The {{location}} surburb is not found",
+      "postcode": "The postcode {{postcode}} does not match the surburb {{location}}",
+      "state": "The surburb {{location}} does not exist in the state {{state}}"
+    },
+    "successMsg": "The postcode, suburb and state entered are valid.",
+    "find": "Find"
   },
   "weather": {
     "title": "Weather forecast"
