@@ -48,10 +48,11 @@ export function validateLocationPostcode(details) {
  * Is an action to change errors state to trigger error messages in postcode validation form
  * @param {object} errors is an object including errors: location, state and postcode
  */
-export function locationValidationError(errors) {
+export function locationValidationError(errors, foundLocations = []) {
   return {
     type: LOCATION_VALIDATION_ERROR,
     errors,
+    foundLocations,
   };
 }
 /**

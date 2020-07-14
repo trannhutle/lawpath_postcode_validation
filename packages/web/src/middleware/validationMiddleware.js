@@ -41,7 +41,7 @@ export const postcodeFormValidation = ({ dispatch, getState }) => (next) => (act
         } else {
           /* If the location is existed, check matching information from back-end and input informtion */
           const validationResult = locationValidator(attributeValidators, filterLocations, action.details);
-          dispatch(locationValidationError({ ...errors, ...validationResult }));
+          dispatch(locationValidationError({ ...errors, ...validationResult }, filterLocations));
         }
       } else {
         /* Trigger showing error message when sending messag to server unsuccessfully */

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Formik, Form } from "formik";
-import { Button, Card, CardContent, Typography, Grid, CircularProgress } from "@material-ui/core";
+import { Button, Card, CardContent, Typography, Grid, CircularProgress, Chip } from "@material-ui/core";
 import * as validationActions from "../action/validationAction";
 import { useDispatch, useSelector } from "react-redux";
 import { STATES } from "../utils/statics";
@@ -8,6 +8,8 @@ import { getPostcostValidationSchema } from "../utils/validationSchemas";
 import { useTranslation } from "react-i18next";
 import { SetLocalisation } from "../utils/utils";
 import { CustomSelect, CustomTextField } from "../components/forms";
+import LocationSearchingIcon from "@material-ui/icons/LocationSearching";
+import LocationCityIcon from "@material-ui/icons/LocationCity";
 
 const style = {
   textField: {
@@ -32,10 +34,11 @@ const PostCodeValidationForm = () => {
   const dispatch = useDispatch();
 
   /* Subscribe to redux storage to listen to changes */
-  const { errors, details, loading } = useSelector((state) => ({
+  const { errors, details, loading, foundLocations } = useSelector((state) => ({
     errors: state.postcode.errors,
     details: state.postcode.details,
     loading: state.postcode.loading,
+    foundLocations: state.postcode.foundLocations,
   }));
   const [formData, setFormData] = useState(details);
 
@@ -47,6 +50,25 @@ const PostCodeValidationForm = () => {
     setFormData(data);
     dispatch(validationActions.resetErrors());
     dispatch(validationActions.validateLocationPostcode(data));
+  };
+
+  /**
+   * Check all custom validation fields are valid
+   */
+  const isFormValid = () => {
+    return Object.values(errors).every((error) => error === false);
+  };
+
+  /**
+   * Get unique states from found locations
+   */
+  const getUniqueStates = (locations) => {
+    const comparator = (uniqueArray, comparator) => {
+      return uniqueArray.some((item) => item.state === comparator.state);
+    };
+    return locations.reduce((unique, item) => {
+      return comparator(unique, item) ? unique : [...unique, item];
+    }, []);
   };
 
   return (
@@ -74,6 +96,7 @@ const PostCodeValidationForm = () => {
             formControlProps={style.formControl}
             {...style.textField}
           />
+
           <CustomTextField
             name="postcode"
             label={t("postcode.fields.postcode")}
@@ -88,6 +111,13 @@ const PostCodeValidationForm = () => {
             formControlProps={style.formControl}
             {...style.textField}
           />
+          <Grid container direction="row" justify="flex-end">
+            {errors.postcode && foundLocations && foundLocations.length !== 0
+              ? foundLocations.map((location) => (
+                  <Chip variant="outlined" icon={<LocationSearchingIcon />} color="primary" label={location.postcode} />
+                ))
+              : null}
+          </Grid>
           <CustomSelect
             name="state"
             label={t("postcode.fields.state")}
@@ -102,7 +132,18 @@ const PostCodeValidationForm = () => {
             }}
             formControlProps={style.formControlSelect}
           ></CustomSelect>
-
+          <Grid container direction="row" justify="flex-end">
+            {errors.postcode && foundLocations && foundLocations.length !== 0
+              ? getUniqueStates(foundLocations).map((location) => (
+                  <Chip
+                    variant="outlined"
+                    icon={<LocationCityIcon />}
+                    color="secondary"
+                    label={STATES[location.state]}
+                  />
+                ))
+              : null}
+          </Grid>
           <Grid container justify="center" style={{ height: "50px" }}>
             {Object.values(errors).every((error) => error === false) && isSubmitting && !loading && !dirty ? (
               <Typography color="primary">{t("postcode.successMsg")}</Typography>

@@ -6,6 +6,7 @@ const defaultState = {
     postcode: "",
     state: "",
   },
+  foundLocations: [],
   errors: {
     location: false,
     postcode: false,
@@ -28,6 +29,7 @@ const postcodeReducer = (state = defaultState, action) => {
     case LOCATION_VALIDATION_ERROR:
       return {
         ...state,
+        foundLocations: [].concat(state.foundLocations, action.foundLocations),
         errors: {
           ...state.errors,
           ...action.errors,
@@ -46,6 +48,7 @@ const postcodeReducer = (state = defaultState, action) => {
       });
       return {
         ...state,
+        foundLocations: [],
         errors: {
           ...state.errors,
         },
