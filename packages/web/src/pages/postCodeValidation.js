@@ -65,7 +65,7 @@ const PostCodeValidationForm = () => {
             customError={errors.location}
             customErrorText={t("postcode.errorMsgs.location", { location: formData.location || "" })}
             formControlProps={style.formControl}
-            // {...style.textField}
+            {...style.textField}
           />
           <CustomedTextField
             name="postcode"
@@ -79,7 +79,7 @@ const PostCodeValidationForm = () => {
               "data-testid": "postcode",
             }}
             formControlProps={style.formControl}
-            // {...style.textField}
+            {...style.textField}
           />
           <CustomedSelect
             name="state"
@@ -90,6 +90,9 @@ const PostCodeValidationForm = () => {
               location: formData.location || "",
               state: STATES[formData.state] || "",
             })}
+            inputProps={{
+              "data-testid": "state",
+            }}
             formControlProps={style.formControlSelect}
           ></CustomedSelect>
 
@@ -101,7 +104,13 @@ const PostCodeValidationForm = () => {
           </Grid>
 
           <Grid container justify="center">
-            <Button id="findBtn" disabled={!dirty || !isValid} variant="outlined" color="primary" type="submit">
+            <Button
+              alt="submitPostcodeFormBtn"
+              disabled={!dirty || !isValid}
+              variant="outlined"
+              color="primary"
+              type="submit"
+            >
               {t("postcode.find")}
             </Button>
           </Grid>
@@ -126,5 +135,4 @@ function PostCodeValidation() {
     </Grid>
   );
 }
-
 export default PostCodeValidation;

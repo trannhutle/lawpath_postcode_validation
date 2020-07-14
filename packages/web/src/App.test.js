@@ -6,70 +6,69 @@ global.MutationObserver = MutationObserver;
 import "@testing-library/jest-dom/extend-expect";
 
 import { render } from "./test-utils";
-import {
-  fireEvent,
-  screen,
-  cleanup,
-  act,
-  within,
-  queryByAttribute,
-  waitForDomChange,
-  waitForElementToBeRemoved,
-  waitForElement,
-  waitFor,
-  wait,
-} from "@testing-library/react";
+import { fireEvent, screen, cleanup, waitFor } from "@testing-library/react";
 import App from "./App";
-// afterEach(cleanup);
 
-// describe("Error input test", () => {
-//   it("Test missing required field", () => {});
-// });
+const testSuitesData = [
+  {
+    describe: "Show Surburb not found error message",
+    location: "Goulburn_N",
+    postcode: 3333,
+    state: "ACT",
+    expectedResult: "postcode.errorMsgs.location",
+  },
+  {
+    describe: "Show Postcode not match Surburb error message",
+    location: "Macquarie Park",
+    postcode: 5333,
+    state: "ACT",
+    expectedResult: "postcode.errorMsgs.postcode",
+  },
+  {
+    describe: "Show State does not include surburb error message",
+    location: "Macquarie Park",
+    postcode: 2113,
+    state: "ACT",
+    expectedResult: "postcode.errorMsgs.state",
+  },
+  {
+    describe: "Show State does not include surburb error message",
+    location: "Macquarie Park",
+    postcode: 2113,
+    state: "NSW",
+    expectedResult: "postcode.successMsg",
+  },
+];
 
-test("loads and displays greeting", async () => {
-  const { debug, container, getByTestId, queryByText, getByText } = render(<App />);
+let utils = null;
 
-  expect(screen.getByText("Loading")).toBeInTheDocument();
-  await waitFor(() => {
-    expect(getByText("postcode.find")).toBeInTheDocument();
+describe("Test postcode form submission", async () => {
+  let surburbText, postcodeText, stateSelect, submitBtn;
+  beforeEach(async () => {
+    utils = render(<App />);
+    await waitFor(() => {
+      expect(screen.getByText("postcode.find")).toBeInTheDocument();
+    });
+    surburbText = utils.getByTestId("location");
+    postcodeText = utils.getByTestId("postcode");
+    stateSelect = utils.getByTestId("state");
+    submitBtn = utils.getByText("postcode.find").parentNode;
   });
 
-  const surburbTxt = getByTestId("location");
-  const postCodeText = container.querySelector('input[name="postcode"]');
-  const stateSelect = container.querySelector('input[name="state"]');
-
-  fireEvent.change(surburbTxt, {
-    target: {
-      value:
-        "Austrlaliacccc",
-    },
+  afterEach(() => {
+    cleanup();
   });
 
+  testSuitesData.map((testData) => {
+    it(testData.describe, async () => {
+      fireEvent.change(surburbText, { target: { value: testData.location } });
+      fireEvent.change(postcodeText, { target: { value: testData.postcode } });
+      fireEvent.change(stateSelect, { target: { value: testData.state } });
+      fireEvent.click(submitBtn);
 
-  fireEvent.change(postCodeText, { target: { value: 2222 } });
-
-  await waitFor(() => {
-    fireEvent.change(stateSelect, { target: { value: "ACT" } });
+      await waitFor(() => {
+        expect(utils.getByText(testData.expectedResult)).toBeInTheDocument();
+      });
+    });
   });
-  expect(stateSelect.value).toBe("ACT");
-
-  const submitBtn = container.querySelector("#findBtn");
-  fireEvent.click(submitBtn);
-
-
-
-
-  
-  await waitFor(() => {
-    expect(getByText("is not found")).toBeInTheDocument();
-  });
-  // await within(container).findByText("is not found");
-
-  // console.log(wrapper.find("is not found").debug());
-
-  // await waitFor(() => {
-  //   expect(
-  //     container.querySelector("Mui-error")
-  //   ).toBeInTheDocument();
-  // });
 });

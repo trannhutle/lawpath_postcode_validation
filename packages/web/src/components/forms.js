@@ -9,7 +9,7 @@ export const CustomedSelect = ({ data, label, customError, customErrorText, form
   return (
     <FormControl {...formControlProps} error={!!errorText}>
       <InputLabel>{label}</InputLabel>
-      <Select {...field} label={label}>
+      <Select {...field} {...props} label={label}>
         {Object.keys(data).map((key, index) => (
           <MenuItem id={`${key}_${index}`} value={key}>
             {data[key]}
@@ -28,7 +28,7 @@ export const CustomedTextField = ({ customError, customErrorText, placeholder, f
     meta.error && meta.touched ? meta.error : customError && meta.value === meta.initialValue ? customErrorText : "";
   return (
     <FormControl {...formControlProps} error={!!errorText}>
-      <TextField {...field} {...props} helperText={errorText} error={!!errorText} />
+      <TextField {...field} helperText={errorText} error={!!errorText} {...props} />
     </FormControl>
   );
 };
