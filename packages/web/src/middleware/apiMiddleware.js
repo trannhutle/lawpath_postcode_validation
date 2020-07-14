@@ -1,5 +1,4 @@
 import { SUBMIT_REQUEST, loading } from "../action/validationAction";
-import { useTranslation } from "react-i18next";
 import { triggerNofification } from "../action/globalAction";
 
 /**

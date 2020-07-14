@@ -84,6 +84,8 @@ Under the `/packages/` folder, run below command to start both web and api
 yarn start
 ```
 
+The web application will be run on host: http://localhost:3000/
+
 ### 3.2 Start the application by `docker`
 
 Open terminal and go to workspace of this application.

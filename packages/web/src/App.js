@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import "./App.css";
 import PostCodeValidation from "./pages/postCodeValidation";
 import { Container } from "@material-ui/core";
