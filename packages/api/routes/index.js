@@ -5,10 +5,9 @@ const { postCodeFormValidation } = require("../middleware/validate");
 const { validatePostCode } = require("../services/postcodeService");
 const { getPostcostValidationSchema } = require("@lawpath/common");
 
-router.get("/", (req, res, next) => {
-  res.render("index", { title: "Expressss sss" });
-});
-
+/**
+ * Validate surburb information by using API from Australia Post to get details of surburbs in Australia
+ */
 router.post(
   "/validatePostCode",
   postCodeFormValidation({
