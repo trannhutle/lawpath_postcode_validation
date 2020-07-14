@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BACKEND_HOST } from "@lawpath/common";
+import { BACKEND_HOST } from "../appConfig";
 /**
  * Send request to back-end to check get find details about the input location
  *

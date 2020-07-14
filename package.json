@@ -4,8 +4,15 @@
   "workspaces": [
     "packages/*"
   ],
-  "scripts": {},
+  "scripts": {
+    "web": "cd packages/web && yarn install && yarn start",
+    "api": "cd packages/api &&  yarn install && yarn start",
+    "start": "concurrently \"npm run web\" \"npm run api\""
+  },
   "dependencies": {
     "lint-staged": "^10.2.11"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0"
   }
 }

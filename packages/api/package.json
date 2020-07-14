@@ -6,7 +6,6 @@
     "start": "nodemon -L bin/www"
   },
   "dependencies": {
-    "@lawpath/common": "1.0.0",
     "axios": "^0.19.2",
     "chokidar": "^3.4.0",
     "cookie-parser": "~1.4.4",

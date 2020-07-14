@@ -3,7 +3,7 @@ var router = express.Router();
 const yup = require("yup");
 const { postCodeFormValidation } = require("../middleware/validate");
 const { validatePostCode } = require("../services/postcodeService");
-const { getPostcostValidationSchema } = require("@lawpath/common");
+const { getPostcostValidationSchema } = require("../schema/validations");
 
 /**
  * Validate surburb information by using API from Australia Post to get details of surburbs in Australia

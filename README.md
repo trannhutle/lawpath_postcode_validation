@@ -47,7 +47,7 @@ Follow this instruction to from the official docker web pages [install docker](h
 git clone https://github.com/trannhutle/lawpath_postcode_validation
 ```
 
-There are two repositories in this application: `api` and `web`.
+There are two application in this application: `api` and `web`.
 
 - `api` contains source code for back-end
 - `web` contains source code for front-end
@@ -56,57 +56,52 @@ There are two repositories in this application: `api` and `web`.
 
 We need to have the Austrlian Post authentication key to run the send the request to Australian post server.
 
-If you have not installed the `yarn` package, see the instruction here [yarn package installation](https://yarnpkg.com/lang/en/docs/install/) to install `yarn` package
+### 2.1 Go to `/api/` folder which has the relative path is `/packages/api`
+
+### 2.2 Create the `.env` file with the belowed informtion
+
+The `*****` will be replaced by the authentication informtion.
 
 ```
-yarn seed
+AUS_POST_AUTH_KEY=*****
+AUS_POST_POST_CODE_API==*****
 ```
 
-To clean the data of all table, use the follow command on the `api` folder
+Please contact Australia post to get the authentication information. We could not run this application if we do not have those two value.
+
+- AUS_POST_AUTH_KEY: is an authentication key
+- AUS_POST_POST_CODE_API: is a path to call API
+
+## 3.Start application
+
+### 3.1. Start the application by `NodeJS`
+
+Open terminal and go to workspace of this application.
+
+Under the `/packages/` folder, run below command to start both web and api
 
 ```
-yarn seed
+yarn start
 ```
 
-## 7. Start back-end server
+### 3.2 Start the application by `docker`
 
-Start the server
+Open terminal and go to workspace of this application.
 
-```
-npm start
-```
-
-By default, the back-end server run on port :3000
-
-# Setup on front-end
-
-Navigate to `web` folder
-
-## 1. Install all the required libraries for the front-end.
+Under the `/packages/` folder
 
 ```
-npm install
+docker-compose up --build
 ```
 
-## 2. Change back-end host
+The web application will be run on host: http://localhost:3001/
 
-If you deploy a back-end on the other server, go to folder `web/src/enviroments` and edit file `environment.ts`.
+## 4 Run the for React Web application
 
-Change `backEndHost` to the host that you deploy back-end server. By default the back-end host is: `localhost:3000`
+Open terminal and go to workspace of this application.
 
-## 3. Deploy and start the front-end
-
-```
-ng serve
-```
-
-By default, the front-end will run on port `:4200`, you could change to other port by:`
+Under the `/packages/web` folder, run command
 
 ```
-ng serve --port <YOUR PORT> (4201)
+yarn test
 ```
-
-# The document about the APIs published from the back-end
-
-After the back-end is deployed successfully, the document about the APIs is also viewed by this url: `yourbackendhost:PORT/api-docs/`, for example `http://localhost:3000/api-docs/`
-![alt API Document](https://raw.githubusercontent.com/anltnmse60906/ADA-Restaurant-Booking-System/master/api/public/images/Screen%20Shot%202018-10-19%20at%202.51.03%20am.png)

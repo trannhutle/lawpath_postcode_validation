@@ -20,7 +20,7 @@ services:
       context: ./packages/api
       dockerfile: Dockerfile
     ports:
-      - 8181:8080
+      - 3131:3131
     volumes:
       - "./packages/api:/var/app/api"
       - "/var/app/api/node_modules"

@@ -4,7 +4,7 @@ import { Button, Card, CardContent, Typography, Grid, CircularProgress } from "@
 import * as validationActions from "../action/validationAction";
 import { useDispatch, useSelector } from "react-redux";
 import { STATES } from "../utils/statics";
-import { getPostcostValidationSchema } from "@lawpath/common";
+import { getPostcostValidationSchema } from "../utils/validationSchemas";
 import { useTranslation } from "react-i18next";
 import { SetLocalisation } from "../utils/utils";
 import { CustomSelect, CustomTextField } from "../components/forms";

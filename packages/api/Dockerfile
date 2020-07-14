@@ -1,18 +1,15 @@
-FROM node:12.18.2-alpine as builder
+FROM node:12.18.2-alpine
 
 RUN npm install -g nodemon
 
-# Intall dependencies
-COPY package*.json ./
-RUN npm install --silent
-
-FROM node:12.18.2-alpine
-
 WORKDIR /var/app/api/
-COPY --from=builder node_modules node_modules
 
-COPY . .
+# Intall dependencies
+COPY ./package.json /var/app/api/
+RUN npm install
 
-# Expor port and start application
-EXPOSE 8080
+
+COPY . /var/app/api/
+
+EXPOSE 3131
 CMD ["npm", "run", "start"]
