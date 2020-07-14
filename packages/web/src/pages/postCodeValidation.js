@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Formik, Form } from "formik";
-import { TextField, Button, Card, CardContent, Typography, Grid, CircularProgress } from "@material-ui/core";
+import { Button, Card, CardContent, Typography, Grid, CircularProgress } from "@material-ui/core";
 import * as validationActions from "../action/validationAction";
 import { useDispatch, useSelector } from "react-redux";
 import { STATES } from "../utils/statics";
 import { getPostcostValidationSchema } from "@lawpath/common";
 import { useTranslation } from "react-i18next";
 import { SetLocalisation } from "../utils/utils";
-import { CustomedSelect, CustomedTextField } from "../components/forms";
+import { CustomSelect, CustomTextField } from "../components/forms";
 
 const style = {
   textField: {
@@ -26,16 +26,23 @@ const style = {
 };
 
 const PostCodeValidationForm = () => {
+  /* Reset localisation message */
   SetLocalisation();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  /* Subscribe to redux storage to listen to changes */
   const { errors, details, loading } = useSelector((state) => ({
     errors: state.postcode.errors,
     details: state.postcode.details,
     loading: state.postcode.loading,
   }));
   const [formData, setFormData] = useState(details);
-  const dispatch = useDispatch();
 
+  /**
+   * Trigger validation process by sending request to back-end to get informtion about input location
+   * @param {Object} data validated input form data
+   */
   const onValidateFrom = (data) => {
     setFormData(data);
     dispatch(validationActions.resetErrors());
@@ -56,7 +63,7 @@ const PostCodeValidationForm = () => {
     >
       {({ isSubmitting, isValid, dirty, success }) => (
         <Form>
-          <CustomedTextField
+          <CustomTextField
             name="location"
             label={t("postcode.fields.location")}
             inputProps={{
@@ -67,7 +74,7 @@ const PostCodeValidationForm = () => {
             formControlProps={style.formControl}
             {...style.textField}
           />
-          <CustomedTextField
+          <CustomTextField
             name="postcode"
             label={t("postcode.fields.postcode")}
             customError={errors.postcode}
@@ -81,7 +88,7 @@ const PostCodeValidationForm = () => {
             formControlProps={style.formControl}
             {...style.textField}
           />
-          <CustomedSelect
+          <CustomSelect
             name="state"
             label={t("postcode.fields.state")}
             data={STATES}
@@ -94,7 +101,7 @@ const PostCodeValidationForm = () => {
               "data-testid": "state",
             }}
             formControlProps={style.formControlSelect}
-          ></CustomedSelect>
+          ></CustomSelect>
 
           <Grid container justify="center" style={{ height: "50px" }}>
             {Object.values(errors).every((error) => error === false) && isSubmitting && !loading && !dirty ? (
@@ -106,7 +113,7 @@ const PostCodeValidationForm = () => {
           <Grid container justify="center">
             <Button
               alt="submitPostcodeFormBtn"
-              disabled={!dirty || !isValid}
+              disabled={!isValid || (!isValid && errors.submitFailed)}
               variant="outlined"
               color="primary"
               type="submit"
@@ -120,7 +127,7 @@ const PostCodeValidationForm = () => {
   );
 };
 
-function PostCodeValidation() {
+const PostCodeValidation = () => {
   const { t } = useTranslation();
   return (
     <Grid container justify="center">
@@ -134,5 +141,5 @@ function PostCodeValidation() {
       </Card>
     </Grid>
   );
-}
+};
 export default PostCodeValidation;

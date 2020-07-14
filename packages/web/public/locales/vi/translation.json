@@ -21,5 +21,8 @@
   },
   "weather": {
     "title": "Weather forecast"
+  },
+  "messages": {
+    "errorRequestApi": "Khongo the ket noi toi may chu"
   }
 }

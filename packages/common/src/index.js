@@ -1,4 +1,5 @@
 const yup = require("yup");
+const { BACKEND_HOST } = require("./config/web");
 
 const getPostcostValidationSchema = ({ location, postcode, state }) => {
   return yup.object().shape({
@@ -20,5 +21,6 @@ const getPostcostValidationSchema = ({ location, postcode, state }) => {
 };
 
 module.exports = {
+  BACKEND_HOST,
   getPostcostValidationSchema,
 };

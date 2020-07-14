@@ -19,7 +19,6 @@ router.post(
     }),
   }),
   (req, res, next) => {
-    console.log(req.validData);
     validatePostCode(req.validData.location, (response) => {
       return res.status(200).json(response);
     });

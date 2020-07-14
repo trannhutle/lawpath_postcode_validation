@@ -5,6 +5,7 @@ import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import { makeStyles } from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 import { availableLanguages } from "../i18n";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -12,11 +13,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * A header component of the application
+ */
 export const Headers = ({ changeLanguage }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
+  /**
+   * Handle onlick of select item to change language
+   */
   const onclickItem = (language) => {
     setAnchorEl(null);
     if (language) {
@@ -24,6 +31,9 @@ export const Headers = ({ changeLanguage }) => {
     }
   };
 
+  /**
+   * Trigger showing menu language
+   */
   const showMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -56,4 +66,10 @@ export const Headers = ({ changeLanguage }) => {
       </Toolbar>
     </AppBar>
   );
+};
+Headers.prototype = {
+  /**
+   * Is a function to trigger changing language function from higher component.
+   */
+  changeLanguage: PropTypes.func.isRequired,
 };

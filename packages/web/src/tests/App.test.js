@@ -1,4 +1,3 @@
-// __tests__/fetch.test.js
 import React from "react";
 
 import MutationObserver from "mutation-observer";
@@ -7,7 +6,7 @@ import "@testing-library/jest-dom/extend-expect";
 
 import { render } from "./test-utils";
 import { fireEvent, screen, cleanup, waitFor } from "@testing-library/react";
-import App from "./App";
+import App from "../App";
 
 const testSuitesData = [
   {
@@ -42,6 +41,13 @@ const testSuitesData = [
 
 let utils = null;
 
+/**
+ * Test postcode validation by cases:
+ * 1. Not found surburb
+ * 2. Surburb and postcode is matched
+ * 3. Surburb is not found in state
+ * 4. Suimit successfully
+ */
 describe("Test postcode form submission", async () => {
   let surburbText, postcodeText, stateSelect, submitBtn;
   beforeEach(async () => {
