@@ -133,7 +133,7 @@ const PostCodeValidationForm = () => {
             formControlProps={style.formControlSelect}
           ></CustomSelect>
           <Grid container direction="row" justify="flex-end">
-            {errors.postcode && foundLocations && foundLocations.length !== 0
+            {errors.state && foundLocations && foundLocations.length !== 0
               ? getUniqueStates(foundLocations).map((location) => (
                   <Chip
                     variant="outlined"
